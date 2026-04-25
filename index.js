@@ -4,8 +4,9 @@ const mongoose = require('mongoose')
 const path = require('path');
 const chat = require('./models/chat');
 
-app.set("view" , path.join(__dirname, "view"));
+app.set("views" , path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "Public")))
 
 
 main().then(() => console.log('Connected to MongoDB'))
@@ -37,3 +38,8 @@ app.listen(8080, () => {
     console.log('Server is running on port 8080');
 });
 
+app.get('/chats', async (req, res) => {
+    let chats = await chat.find()
+    console.log(chats);
+    res.render("index.ejs", {chats})
+});
